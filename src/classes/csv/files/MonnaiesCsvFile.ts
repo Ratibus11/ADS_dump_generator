@@ -1,7 +1,7 @@
 import { CsvFile } from "../CsvFile";
-import { MonnaieCsvRecord } from "../records/MonnaieCsvRecord";
+import { MonnaieCsvRecord, MonnaieCsvObject } from "../records/MonnaieCsvRecord";
 
-class MonnaiesCsvFile extends CsvFile<MonnaieCsvRecord> {
+class MonnaiesCsvFile extends CsvFile<MonnaieCsvRecord, MonnaieCsvObject, 3> {
 	constructor() {
 		super("monnaies", MonnaieCsvRecord, 3);
 	}

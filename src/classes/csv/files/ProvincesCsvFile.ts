@@ -1,9 +1,9 @@
 import { CsvFile } from "../CsvFile";
-import { ProvinceCsvRecord } from "../records/ProvinceCsvRecord";
+import { ProvinceCsvRecord, ProvinceCsvObject } from "../records/ProvinceCsvRecord";
 
-class ProvincesCsvFile extends CsvFile<ProvinceCsvRecord> {
+class ProvincesCsvFile extends CsvFile<ProvinceCsvRecord, ProvinceCsvObject, 2> {
 	constructor() {
-		super("provinces", ProvinceCsvRecord, 2, false);
+		super("provinces", ProvinceCsvRecord, 2);
 	}
 }
 

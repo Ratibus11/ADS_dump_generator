@@ -1,9 +1,9 @@
 import { CsvFile } from "../CsvFile";
-import { VenteCsvRecord } from "../records/VenteCsvRecord";
+import { VenteCsvRecord, VenteCsvObject } from "../records/VenteCsvRecord";
 
-class VentesCsvFile extends CsvFile<VenteCsvRecord> {
+class VentesCsvFile extends CsvFile<VenteCsvRecord, VenteCsvObject, 10> {
 	constructor() {
-		super("ventes", VenteCsvRecord, 10,);
+		super("ventes", VenteCsvRecord, 10, false);
 	}
 }
 

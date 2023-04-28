@@ -1,12 +1,9 @@
 import { CsvFile } from "../CsvFile";
-import { DemiDieuCsvRecord } from "../records/DemiDieuCsvRecord";
+import { DemiDieuCsvRecord, DemiDieuCsvObject } from "../records/DemiDieuCsvRecord";
 
-
-class DemiDieuxCsvFile extends CsvFile<DemiDieuCsvRecord> {
-	private static readonly __SIZE: 2 = 2
-
+class DemiDieuxCsvFile extends CsvFile<DemiDieuCsvRecord, DemiDieuCsvObject, 2> {
 	constructor() {
-		super("demi_dieux", DemiDieuCsvRecord, DemiDieuxCsvFile.__SIZE);
+		super("demi_dieux", DemiDieuCsvRecord, 2);
 	}
 }
 
