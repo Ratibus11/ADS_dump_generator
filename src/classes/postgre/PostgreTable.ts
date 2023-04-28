@@ -1,0 +1,3 @@
+class PostgreTable {}
+
+export { PostgreTable };

@@ -1,0 +1,32 @@
+{
+	"private": true,
+	"name": "yfancorp_dump_generator",
+	"displayName": "Ýfancorp - Dump generator",
+	"description": "CESI École d'Ingénieurs - A4 FISE Info - 2022-2023 - Par Lucas Bastian",
+	"author": {
+		"name": "Lucas Bastian",
+		"url": "https://github.com/ratibus11",
+		"email": "lucas.bastian@viacesi.fr"
+	},
+	"main": "app.js",
+	"scripts": {
+		"start": "ts-node src/main.ts",
+		"build": "npm run clean && webpack",
+		"dev": "nodemon -e ts -w \"src/**/*.ts\" -x \" npm run start\"",
+		"clean": "rm -f app.js"
+	},
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"webpack-node-externals": "^3.0.0"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.16",
+		"@types/webpack-node-externals": "^2.5.3",
+		"nodemon": "^2.0.20",
+		"ts-loader": "^9.4.2",
+		"ts-node": "^10.9.1",
+		"webpack": "^5.75.0",
+		"webpack-cli": "^5.0.1"
+	}
+}
