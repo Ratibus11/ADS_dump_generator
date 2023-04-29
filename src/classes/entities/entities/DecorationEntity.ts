@@ -2,6 +2,10 @@ import { Entity } from "../Entity";
 import { DecorationEntityRecord } from "../records/DecorationEntityRecord";
 
 class DecorationEntity extends Entity<DecorationEntityRecord> {
+    constructor() {
+        super("decoration");
+    }
+
     public insert(name: string) {
         this.__records.push(new DecorationEntityRecord(name))
     }

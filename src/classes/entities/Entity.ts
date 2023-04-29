@@ -8,16 +8,16 @@ abstract class Entity<R extends EntityRecord<Object>> {
 	private static readonly __PATH_TO_OUTPUT = path.resolve(Path.pathToJson, "tmp/entities");
 	private static readonly __JSON_LIMIT: number = 1000;
 
-	private readonly name: string;
+	private readonly __name: string;
 	protected __records: R[];
 
 	constructor(name: string) {
-		this.name = name;
+		this.__name = name;
 		this.__records = [];
 	}
 
 	public saveAsJson(): void {
-		const filePath = path.resolve(Entity.__PATH_TO_OUTPUT, `${this.name}.json`);
+		const filePath = path.resolve(Entity.__PATH_TO_OUTPUT, `${this.__name}.json`);
 
 		fs.writeFileSync(filePath, "[");
 

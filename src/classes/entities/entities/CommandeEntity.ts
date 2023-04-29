@@ -4,6 +4,10 @@ import { Entity } from "../Entity";
 import { CommandeEntityRecord } from "../records/CommandeEntityRecord";
 
 class CommandeEntity extends Entity<CommandeEntityRecord> {
+	constructor() {
+        super("commande");
+    }
+
 	public insert(quantity: number, payment: [number, number, number]) {
 		this.__records.push(new CommandeEntityRecord(quantity, payment));
 	}

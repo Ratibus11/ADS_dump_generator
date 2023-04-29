@@ -2,6 +2,10 @@ import { Entity } from "../Entity";
 import { MonnaieEntityRecord } from "../records/MonnaieEntityRecord";
 
 class MonnaieEntity extends Entity<MonnaieEntityRecord> {
+    constructor() {
+        super("monnaie");
+    }
+
     public insert(name: string, convertionToMinimum: number) {
         this.__records.push(new MonnaieEntityRecord(name, convertionToMinimum))
     }
