@@ -1,4 +1,5 @@
 .history
 node_modules
 **/.DS_Store
-tmp
+src/assets/tmp
+src/assets/output
