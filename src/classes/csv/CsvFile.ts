@@ -1,14 +1,15 @@
 import * as path from "path";
 import * as fs from "fs";
+
 import { CsvRecord } from "./CsvRecord";
+import { Path } from "../../utils/Path/Path";
 
 abstract class CsvFile<R extends CsvRecord<S, O>, O extends Object, S extends number> {
-	private static readonly __PATH_TO_CSV_FILES = path.resolve(process.cwd(), "src/assets");
-	private static readonly __PATH_TO_CSV_INPUTS = path.resolve(this.__PATH_TO_CSV_FILES, "source");
-	private static readonly __PATH_TO_JSON_INPUTS = path.resolve(this.__PATH_TO_CSV_FILES, "tmp");
-	private static readonly __RECORDS_LIMIT = 10;
+	private static readonly __PATH_TO_INPUTS = path.resolve(Path.pathToJson, "sources");
+	private static readonly __PATH_TO_OUTPUT = path.resolve(Path.pathToJson, "tmp/sources");
+	private static readonly __JSON_LIMIT: number = 1000;
 
-	private readonly fileName;
+	private readonly fileName: string;
 	protected readonly __RECORDS: R[];
 
 	constructor(
@@ -19,7 +20,7 @@ abstract class CsvFile<R extends CsvRecord<S, O>, O extends Object, S extends nu
 		separator: string = ",",
 	) {
 		this.fileName = fileName;
-		const FILE_PATH = path.resolve(CsvFile.__PATH_TO_CSV_INPUTS, `${fileName}.csv`);
+		const FILE_PATH = path.resolve(CsvFile.__PATH_TO_INPUTS, `${fileName}.csv`);
 
 		if (!fs.existsSync(FILE_PATH)) {
 			throw Error(`File ${FILE_PATH} not found`);
@@ -28,23 +29,32 @@ abstract class CsvFile<R extends CsvRecord<S, O>, O extends Object, S extends nu
 		const RAW_DATA = fs.readFileSync(FILE_PATH).toString();
 		const PER_LINE_DATA = RAW_DATA.split("\n");
 
-		this.__RECORDS = PER_LINE_DATA.slice(fileContainsColumnTitles ? 1 : 0, CsvFile.__RECORDS_LIMIT).map(
+		this.__RECORDS = PER_LINE_DATA.slice(fileContainsColumnTitles ? 1 : 0).map(
 			(line, i) => new recordConstructor(fileName, i, line, dataSize, separator),
 		);
 		console.log(`${fileName} loaded.`);
 	}
 
-	public saveInoutAsJson(): void {
-		const JsonRecords = this.__RECORDS.map((record) => record.toJson());
+	public get records(): R[] {
+		return this.__RECORDS;
+	}
 
-		if (JsonRecords.length > CsvFile.__RECORDS_LIMIT) {
-			JsonRecords.length = CsvFile.__RECORDS_LIMIT;
-		}
+	public saveAsJson(): void {
+		const filePath = path.resolve(CsvFile.__PATH_TO_OUTPUT, `${this.fileName}.json`);
 
-		fs.writeFileSync(
-			path.resolve(CsvFile.__PATH_TO_JSON_INPUTS, `${this.fileName}.json`),
-			`[${JsonRecords.join(",")}]`,
-		);
+		fs.writeFileSync(filePath, "[");
+
+		const toOutput = this.__RECORDS.slice(0, CsvFile.__JSON_LIMIT);
+		toOutput.forEach((record, i) => {
+			fs.appendFileSync(filePath, record.toJson());
+
+			if (i < this.__RECORDS.length - 1) {
+				fs.appendFileSync(filePath, ",", {});
+			}
+		});
+
+		fs.appendFileSync(filePath, "]");
+		console.log(`${path.basename(path.dirname(filePath))} writed.`);
 	}
 }
 

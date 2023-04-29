@@ -1,4 +1,4 @@
-import { FixedSizeArray } from "@/utils/Array/FixedSizeArray";
+import { FixedSizeArray } from "../../utils/Array/FixedSizeArray";
 
 type CsvRecordContainer<S extends number> = FixedSizeArray<S, string>;
 

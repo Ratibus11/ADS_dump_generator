@@ -21,10 +21,6 @@
 
 		"allowUnusedLabels": false,
 
-		"paths": {
-			"@/*": ["src/*"]
-		},
-
 		"lib": ["ES2021.String"]
 	}
 }

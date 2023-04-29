@@ -1,6 +1,6 @@
 import { CsvRecord } from "../CsvRecord";
 
-type DemiDieuCsvObject = { name: string; parent_god_name: string };
+type DemiDieuCsvObject = { name: string; parent_name: string };
 
 class DemiDieuCsvRecord extends CsvRecord<2, DemiDieuCsvObject> {
 	private readonly __name: string;
@@ -14,18 +14,22 @@ class DemiDieuCsvRecord extends CsvRecord<2, DemiDieuCsvObject> {
 	}
 
 	private __cleanName(): typeof this.__name {
-		return this.data[0].replaceAll(" ", "");
+		return this.data[0].replaceAll(" ", "").toUpperCase();
 	}
 
 	private __cleanParentGodName(): typeof this.__parentGodName {
-		return this.data[1].trim();
+		return this.data[1].trim().toUpperCase();
 	}
 
 	public toObject(): DemiDieuCsvObject {
 		return {
 			name: this.__name,
-			parent_god_name: this.__parentGodName,
+			parent_name: this.__parentGodName,
 		};
+	}
+
+	public get parentGodName(): typeof this.__parentGodName {
+		return this.__parentGodName;
 	}
 }
 

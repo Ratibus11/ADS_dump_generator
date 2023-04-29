@@ -17,12 +17,12 @@ class ProvinceCsvRecord extends CsvRecord<2, ProvinceCsvObject> {
 	}
 
 	private __cleanRegionName(): typeof this.__regionName {
-		return this.data[0].trim();
+		return this.data[0].trim().toUpperCase();
 	}
 
 	private __cleanCityName(): typeof this.__cityName {
 		const cityName = this.data[1].trim();
-		return cityName == "" ? null : cityName;
+		return cityName == '""' ? null : cityName.toUpperCase();
 	}
 
 	public toObject(): ProvinceCsvObject {
@@ -30,6 +30,10 @@ class ProvinceCsvRecord extends CsvRecord<2, ProvinceCsvObject> {
 			region_name: this.__regionName,
 			city_name: this.__cityName,
 		};
+	}
+
+	public get regionName(): typeof this.__regionName {
+		return this.__regionName;
 	}
 }
 

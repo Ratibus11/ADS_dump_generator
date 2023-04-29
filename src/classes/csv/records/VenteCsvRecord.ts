@@ -4,8 +4,8 @@ type VenteCsvObject = {
 	date: [number, string, number];
 	object_name: string;
 	makers_name: string[];
-	decorations_name: string[];
-	powers_name: string[];
+	decorations_name: string[] | null;
+	powers_name: string[] | null;
 	region_name: string;
 	city_name: string | null;
 	paied: {
@@ -20,8 +20,8 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 	private readonly __date: [number, string, number];
 	private readonly __objectName: string;
 	private readonly __makersName: string[];
-	private readonly __decorationsName: string[];
-	private readonly __powersName: string[];
+	private readonly __decorationsName: string[] | null;
+	private readonly __powersName: string[] | null;
 	private readonly __regionName: string;
 	private readonly __cityName: string | null;
 	private readonly __paiedGoldQuantity: number;
@@ -46,31 +46,31 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 
 	private __cleanDate(): typeof this.__date {
 		let [day, month, year] = this.data[0].split(" ").filter((e) => e != "");
-		return [Number.parseInt(day), month, Number.parseInt(year)];
+		return [Number.parseInt(day.replace('"', "")), month.toUpperCase(), Number.parseInt(year)];
 	}
 
 	private __cleanObjectName(): typeof this.__objectName {
-		return this.data[1].trim();
+		return this.data[1].trim().toUpperCase();
 	}
 
 	private __cleanMakersName(): typeof this.__makersName {
-		return this.data[2].split(" & ");
+		return this.data[2].split(" & ").map((e) => e.toUpperCase());
 	}
 
 	private __cleanDecorations(): typeof this.__decorationsName {
-		return this.data[3].split(" & ");
+		return this.data[3] == "" ? null : this.data[3].split(" & ").map((e) => e.toUpperCase());
 	}
 
 	private __cleanPowers(): typeof this.__powersName {
-		return this.data[4].split(" & ");
+		return this.data[4] == "" ? null : this.data[4].split(" & ").map((e) => e.toUpperCase());
 	}
 
 	private __cleanLocation(): [string, string | null] {
 		const data = this.data[5].trim().split(" - ");
 		if (data.length > 1) {
-			return [data[0], data[1]];
+			return [data[0].toUpperCase(), data[1].toUpperCase()];
 		} else {
-			return [data[0], null];
+			return [data[0].toUpperCase(), null];
 		}
 	}
 
@@ -105,6 +105,34 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 				iron: this.__paiedIronQuantity,
 			},
 			quantity: this.__orderedQuantity,
+		};
+	}
+
+	public get quantity(): typeof this.__orderedQuantity {
+		return this.__orderedQuantity;
+	}
+
+	public get makersName(): typeof this.__makersName {
+		return this.__makersName;
+	}
+
+	public get decorationsName(): typeof this.__decorationsName {
+		return this.__decorationsName;
+	}
+
+	public get powersName(): typeof this.__powersName {
+		return this.__powersName;
+	}
+
+	public get objectName(): typeof this.__objectName {
+		return this.__objectName;
+	}
+
+	public get payment(): { gold: number; silver: number; iron: number } {
+		return {
+			gold: this.__paiedGoldQuantity,
+			silver: this.__paiedSilverQuantity,
+			iron: this.__paiedIronQuantity,
 		};
 	}
 }

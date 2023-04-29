@@ -21,9 +21,9 @@ class GuerreCsvRecord extends CsvRecord<2, GuerreCsvObject> {
 	private __cleanLocation(): [string, string | null] {
 		const data = this.data[0].trim().split(" - ");
 		if (data.length > 1) {
-			return [data[0], data[1]];
+			return [data[0].toUpperCase(), data[1].toUpperCase()];
 		} else {
-			return [data[0], null];
+			return [data[0].toUpperCase(), null];
 		}
 	}
 
@@ -36,7 +36,7 @@ class GuerreCsvRecord extends CsvRecord<2, GuerreCsvObject> {
 			if (war.includes("(")) {
 				var [year, province] = war.split(" (");
 				province = province.replaceAll(")", "");
-				return [Number.parseInt(year), province];
+				return [Number.parseInt(year), province.toUpperCase()];
 			} else {
 				return Number.parseInt(war);
 			}
@@ -45,13 +45,13 @@ class GuerreCsvRecord extends CsvRecord<2, GuerreCsvObject> {
 
 	public toObject(): GuerreCsvObject {
 		return {
-			region_name: this.__regionName,
-			city_name: this.__cityName,
+			region_name: this.__regionName.toUpperCase(),
+			city_name: this.__cityName?.toUpperCase() ?? null,
 			wars: this.__wars.map((war) => {
 				if (Array.isArray(war)) {
 					return {
 						year: war[0],
-						god_name: war[1],
+						god_name: war[1].toUpperCase(),
 					};
 				} else {
 					return {
