@@ -6,6 +6,7 @@ import { ProvinceEntity } from "src/classes/entities/entities/ProvinceEntity";
 import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
 import { PostgreColumn } from "../PostgreColumn";
 import { IntegerPostgreColumn } from "../columns/IntegerPostgreColumn";
+import { DecorationEntity } from "src/classes/entities/entities/DecorationEntity";
 
 type CommandePostgreObject = {
 	id: number;
@@ -18,17 +19,36 @@ class CommandePostgreRecord extends PostgreRecord<CommandePostgreObject> {
 	protected _columns: {
 		id: PostgreColumn<number>;
 		quantity: PostgreColumn<number>;
+		id_decoration: PostgreColumn<number, true>;
 		id_province: PostgreColumn<number>;
 		id_objet: PostgreColumn<number>;
 	};
 
-	constructor(commande: CommandeEntityRecord, objets: ObjetEntity, provinces: ProvinceEntity) {
+	constructor(
+		commande: CommandeEntityRecord,
+		objets: ObjetEntity,
+		provinces: ProvinceEntity,
+		decorations: DecorationEntity,
+	) {
 		super();
 		this._columns = {
-			id: new SerialPostgreColumn("id", commande.id, undefined, true),
-			quantity: new IntegerPostgreColumn("quantite", commande.quantity),
-			id_objet: new SmallIntegerPostgreColumn("id_objet", objets.findByName(commande.objectName).id, {table: "objet", column: "id"}),
-			id_province: new SmallIntegerPostgreColumn("id_province", provinces.findByName(commande.provinceName).id, {table: "province", column: "id"}),
+			id: new SerialPostgreColumn("id", commande.id, false, undefined, true),
+			quantity: new IntegerPostgreColumn("quantite", commande.quantity, false),
+			id_decoration: new SmallIntegerPostgreColumn<true>(
+				"id_decoration",
+				decorations.findByNameNullable(commande.decorationName)?.id ?? null,
+				true,
+				{ table: "decoration", column: "id" },
+				true,
+			),
+			id_objet: new SmallIntegerPostgreColumn("id_objet", objets.findByName(commande.objectName).id, false, {
+				table: "objet",
+				column: "id",
+			}),
+			id_province: new SmallIntegerPostgreColumn("id_province", provinces.findByName(commande.provinceName).id, false, {
+				table: "province",
+				column: "id",
+			}),
 		};
 	}
 

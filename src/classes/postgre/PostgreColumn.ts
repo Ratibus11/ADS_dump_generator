@@ -5,19 +5,21 @@ abstract class PostgreColumn<T extends number | string, N extends boolean = fals
 	private readonly __reference: { table: string; column: string } | null;
 	private readonly __name: string;
 	private readonly __isUnique: boolean;
+	private readonly __isNullable: boolean;
 
 	constructor(
 		name: string,
 		type: string,
 		value: N extends false ? T : T | null,
 		validator: boolean,
+		nullable: N,
 		reference?: { table: string; column: string } | undefined,
 		unique: boolean = false,
 	) {
 		if (!validator) {
 			throw Error(`Cannot use value ${value} because is not compliant with ${type}`);
 		}
-
+		this.__isNullable = nullable;
 		this.__name = name.toUpperCase();
 		this._type = type;
 		this._value = value;
@@ -35,10 +37,12 @@ abstract class PostgreColumn<T extends number | string, N extends boolean = fals
 
 	public get sqlType(): string {
 		const type = this._type.toUpperCase();
-		if (this.__isUnique) {
-			return `${type} UNIQUE`;
-		}
-		return type;
+
+		return (
+			[type, this.__isUnique ? "UNIQUE" : null, this.__isNullable ? null : "NOT NULL"].filter(
+				(e) => e != null,
+			) as string[]
+		).join(" ");
 	}
 
 	public get reference(): { source: string; table: string; column: string } | null {

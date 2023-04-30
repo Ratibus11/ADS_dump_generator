@@ -17,8 +17,8 @@ class ProvincePostgreRecord extends PostgreRecord<ProvincePostgreObject> {
 	constructor(province: ProvinceEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", province.id, undefined, true),
-			name: new VarcharPostgreColumn("nom", 20, province.name, undefined, true),
+			id: new SmallSerialPostgreColumn("id", province.id, false, undefined, true),
+			name: new VarcharPostgreColumn("nom", 20, province.name, false, undefined, true),
 		};
 	}
 

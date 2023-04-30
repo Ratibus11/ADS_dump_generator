@@ -19,9 +19,9 @@ class MoisPostgreRecord extends PostgreRecord<MoisPostgreObject> {
 	constructor(mois: MoisEntityRecord, dieux: DieuEntity) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", mois.id, undefined, true),
-			name: new VarcharPostgreColumn("name", 20, mois.name, undefined, true),
-			id_god: new SmallIntegerPostgreColumn("id_dieu", dieux.findByName(mois.godName)?.id, {table: "dieu", column: "id"}),
+			id: new SmallSerialPostgreColumn("id", mois.id, false, undefined, true),
+			name: new VarcharPostgreColumn("name", 20, mois.name, false, undefined, true),
+			id_god: new SmallIntegerPostgreColumn("id_dieu", dieux.findByName(mois.godName)?.id, false, {table: "dieu", column: "id"}),
 		};
 	}
 

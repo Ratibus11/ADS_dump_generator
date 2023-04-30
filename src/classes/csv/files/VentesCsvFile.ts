@@ -18,8 +18,8 @@ class VentesCsvFile extends CsvFile<VenteCsvRecord, VenteCsvObject, 10> {
 		return this.__RECORDS.map((e) => e.objectName);
 	}
 
-	public get decorations(): (string[] | null)[] {
-		return this.__RECORDS.map((e) => e.decorationsName);
+	public get decorations(): (string | null)[] {
+		return this.__RECORDS.map((e) => e.decorationName);
 	}
 
 	public get powers(): (string[] | null)[] {

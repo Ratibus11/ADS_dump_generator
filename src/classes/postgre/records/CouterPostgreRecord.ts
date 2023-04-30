@@ -30,9 +30,9 @@ class CouterPostgreRecord extends PostgreRecord<CouterPostgreObject> {
 	) {
 		super();
 		this._columns = {
-			id_commande: new IntegerPostgreColumn("id_commande", commande.id, { table: "commande", column: "id" }),
-			quantite: new IntegerPostgreColumn("quantite", payment.quantite),
-			id_monnaie: new SmallIntegerPostgreColumn("id_monnaie", monnaies.findByUnit(payment.devise).id, {
+			id_commande: new IntegerPostgreColumn("id_commande", commande.id, false, { table: "commande", column: "id" }),
+			quantite: new IntegerPostgreColumn("quantite", payment.quantite, false),
+			id_monnaie: new SmallIntegerPostgreColumn("id_monnaie", monnaies.findByUnit(payment.devise).id, false, {
 				table: "monnaie",
 				column: "id",
 			}),

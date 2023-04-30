@@ -46,7 +46,7 @@ abstract class PostgreTable<R extends PostgreRecord<Object>> {
 		});
 
 		fs.appendFileSync(filePath, "]");
-		console.log(`${path.basename(path.dirname(filePath))} writed.`);
+		console.log(`${path.basename(path.dirname(filePath))} JSON writed.`);
 	}
 
 	private get __sqlHeader(): string {
@@ -93,6 +93,8 @@ abstract class PostgreTable<R extends PostgreRecord<Object>> {
 				fs.appendFileSync(filePath, recordIndex < iMax ? ",\n" : ";");
 			}
 		}
+
+		console.log(`${path.basename(path.dirname(filePath))} SQL writed.`);
 	}
 
 	public prune() {

@@ -4,10 +4,11 @@ class SerialPostgreColumn<N extends boolean = false> extends PostgreColumn<numbe
 	constructor(
 		name: string,
 		value: N extends false ? number : number | null,
+		nullable: N,
 		reference?: { table: string; column: string },
 		unique: boolean = false
 	) {
-		super(name, "SERIAL", value, value == null ? true : 1 <= value && value <= 2147483647, reference, unique);
+		super(name, "SERIAL", value, value == null ? true : 1 <= value && value <= 2147483647, nullable, reference, unique);
 	}
 }
 

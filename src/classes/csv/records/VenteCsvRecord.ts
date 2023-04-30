@@ -4,7 +4,7 @@ type VenteCsvObject = {
 	date: [number, string, number];
 	object_name: string;
 	makers_name: string[];
-	decorations_name: string[] | null;
+	decoration_name: string | null;
 	powers_name: string[] | null;
 	region_name: string;
 	city_name: string | null;
@@ -20,7 +20,7 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 	private readonly __date: [number, string, number];
 	private readonly __objectName: string;
 	private readonly __makersName: string[];
-	private readonly __decorationsName: string[] | null;
+	private readonly __decorationName: string | null;
 	private readonly __powersName: string[] | null;
 	private readonly __regionName: string;
 	private readonly __cityName: string | null;
@@ -35,7 +35,7 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 		this.__date = this.__cleanDate();
 		this.__objectName = this.__cleanObjectName();
 		this.__makersName = this.__cleanMakersName();
-		this.__decorationsName = this.__cleanDecorations();
+		this.__decorationName = this.__cleanDecorations();
 		this.__powersName = this.__cleanPowers();
 		[this.__regionName, this.__cityName] = this.__cleanLocation();
 		this.__paiedGoldQuantity = this.__cleanPaiedGoldQuantity();
@@ -57,8 +57,8 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 		return this.data[2].split(" & ").map((e) => e.toUpperCase());
 	}
 
-	private __cleanDecorations(): typeof this.__decorationsName {
-		return this.data[3] == "" ? null : this.data[3].split(" & ").map((e) => e.toUpperCase());
+	private __cleanDecorations(): typeof this.__decorationName {
+		return this.data[3] == "" ? null : this.data[3].toUpperCase();
 	}
 
 	private __cleanPowers(): typeof this.__powersName {
@@ -95,7 +95,7 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 			date: this.__date,
 			object_name: this.__objectName,
 			makers_name: this.__makersName,
-			decorations_name: this.__decorationsName,
+			decoration_name: this.__decorationName,
 			powers_name: this.__powersName,
 			region_name: this.__regionName,
 			city_name: this.__cityName,
@@ -116,8 +116,8 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 		return this.__makersName;
 	}
 
-	public get decorationsName(): typeof this.__decorationsName {
-		return this.__decorationsName;
+	public get decorationName(): typeof this.__decorationName {
+		return this.__decorationName;
 	}
 
 	public get powersName(): typeof this.__powersName {

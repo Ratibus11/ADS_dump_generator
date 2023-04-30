@@ -7,10 +7,11 @@ class VarcharPostgreColumn<N extends boolean = false> extends PostgreColumn<stri
 		name: string,
 		size: number,
 		value: N extends false ? string : string | null,
+		nullable: N,
 		reference?: { table: string; column: string },
 		unique: boolean = false
 	) {
-		super(name, `VARCHAR(${size})`, value, value == null ? true : value.length <= size, reference, unique);
+		super(name, `VARCHAR(${size})`, value, value == null ? true : value.length <= size, nullable, reference, unique);
 		this.__size = size;
 	}
 }

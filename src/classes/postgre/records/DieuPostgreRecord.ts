@@ -17,8 +17,8 @@ class DieuPostgreRecord extends PostgreRecord<DieuPostgreObject> {
 	constructor(dieu: DieuEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", dieu.id, undefined, true),
-			name: new VarcharPostgreColumn("name", 20, dieu.name, undefined, true),
+			id: new SmallSerialPostgreColumn("id", dieu.id, false, undefined, true),
+			name: new VarcharPostgreColumn("name", 20, dieu.name, false, undefined, true),
 		};
 	}
 

@@ -17,7 +17,7 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 	private readonly __paiedGoldQuantity: number;
 	private readonly __paiedSilverQuantity: number;
 	private readonly __paiedIronQuantity: number;
-	private readonly __decorations: string[] | null;
+	private readonly __decoration: string | null;
 	private readonly __powers: string[] | null;
 	private readonly __goldUnit: string;
 	private readonly __silverUnit: string;
@@ -29,7 +29,7 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 		payment: [number, number, number],
 		objectName: string,
 		provinceName: string,
-		decorations: string[] | null,
+		decoration: string | null,
 		powers: string[] | null,
 		units: [string, string, string],
 		makers: string[],
@@ -39,7 +39,7 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 		this.__quantity = quantity;
 		this.__objectName = objectName;
 		this.__provinceName = provinceName;
-		this.__decorations = decorations;
+		this.__decoration = decoration;
 		this.__powers = powers;
 		this.__makersName = makers;
 		[this.__paiedGoldQuantity, this.__paiedSilverQuantity, this.__paiedIronQuantity] = payment;
@@ -77,8 +77,8 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 		return this.__provinceName;
 	}
 
-	public get decorations() {
-		return this.__decorations;
+	public get decorationName() {
+		return this.__decoration;
 	}
 
 	public get powers() {

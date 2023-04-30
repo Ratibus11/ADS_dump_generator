@@ -20,7 +20,6 @@ import { ArtisanPostgreTable } from "./classes/postgre/tables/ArtisanPostgreTabl
 import { CommandePostgreTable } from "./classes/postgre/tables/CommandePostgreTable";
 import { CouterPostgreTable } from "./classes/postgre/tables/CouterPostgreTable";
 import { DecorationPostgreTable } from "./classes/postgre/tables/DecorationPostgreTable";
-import { DecorerPostgreTable } from "./classes/postgre/tables/DecorerPostgreTable";
 import { DieuPostgreTable } from "./classes/postgre/tables/DieuPostgreTable";
 import { EnchanterPostgreTable } from "./classes/postgre/tables/EnchanterPostgreTable";
 import { MoisPostgreTable } from "./classes/postgre/tables/MoisPostgreTable";
@@ -69,7 +68,7 @@ entities.monnaies.inserts(
 );
 
 entities.decorations.inserts(
-	UniqueArray.of((inputs.ventes.decorations.filter((e) => Array.isArray(e)) as string[][]).flat()).sort(),
+	UniqueArray.of((inputs.ventes.decorations.filter((e) => e != null) as string[]).flat()).sort(),
 	entities.dieux,
 );
 
@@ -79,7 +78,7 @@ inputs.ventes.records.forEach((r) => {
 		Object.values(r.payment).map((e) => e[1]) as [number, number, number],
 		r.objectName,
 		r.provinceName,
-		r.decorationsName,
+		r.decorationName,
 		r.powersName,
 		Object.values(r.payment).map((e) => e[0]) as [string, string, string],
 		r.makersName,
@@ -94,7 +93,6 @@ let tables = {
 	commande: new CommandePostgreTable(),
 	couter: new CouterPostgreTable(),
 	decoration: new DecorationPostgreTable(),
-	decorer: new DecorerPostgreTable(),
 	dieu: new DieuPostgreTable(),
 	enchanter: new EnchanterPostgreTable(),
 	mois: new MoisPostgreTable(),
@@ -125,16 +123,6 @@ tables.objet.inserts(entities.objets.records);
 //tables.objet.saveAsJson();
 tables.objet.saveAsSql();
 
-entities.commandes.records.forEach((e) => tables.commande.insert(e, entities.objets, entities.provinces));
-//tables.commande.saveAsJson();
-tables.commande.saveAsSql();
-tables.commande.prune();
-
-entities.commandes.records.forEach((e) => tables.couter.insert(e, entities.monnaies));
-//tables.couter.saveAsJson();
-tables.couter.saveAsSql();
-tables.couter.prune();
-
 tables.decoration.inserts(entities.decorations.records, entities.dieux);
 //tables.decoration.saveAsJson();
 tables.decoration.saveAsSql();
@@ -147,10 +135,17 @@ tables.mois.inserts(entities.mois.records, entities.dieux);
 //tables.mois.saveAsJson();
 tables.mois.saveAsSql();
 
-entities.commandes.records.forEach((e) => tables.decorer.insert(e, entities.decorations));
-//tables.decorer.saveAsJson();
-tables.decorer.saveAsSql();
-tables.decorer.prune();
+entities.commandes.records.forEach((e) =>
+	tables.commande.insert(e, entities.objets, entities.provinces, entities.decorations),
+);
+//tables.commande.saveAsJson();
+tables.commande.saveAsSql();
+tables.commande.prune();
+
+entities.commandes.records.forEach((e) => tables.couter.insert(e, entities.monnaies));
+//tables.couter.saveAsJson();
+tables.couter.saveAsSql();
+tables.couter.prune();
 
 entities.commandes.records.forEach((e) => tables.enchanter.insert(e, entities.pouvoirs));
 //tables.enchanter.saveAsJson();

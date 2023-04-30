@@ -4,10 +4,11 @@ class IntegerPostgreColumn<N extends boolean = false> extends PostgreColumn<numb
 	constructor(
 		name: string,
 		value: N extends false ? number : number | null,
+		nullable: N,
 		reference?: { table: string; column: string },
-		unique: boolean = false
+		unique: boolean = false,
 	) {
-		super(name, "INTEGER", value, value == null ? true : -2147483648 <= value && value <= 2147483647, reference, unique);
+		super(name, "INTEGER", value, value == null ? true : -2147483648 <= value && value <= 2147483647, nullable, reference, unique);
 	}
 }
 

@@ -19,12 +19,13 @@ class DecorationPostgreRecord extends PostgreRecord<DecorationPostgreObject> {
 	constructor(decoration: DecorationEntityRecord, dieux: DieuEntity) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", decoration.id, undefined, true),
-			name: new VarcharPostgreColumn("name", 30, decoration.name, undefined, true),
+			id: new SmallSerialPostgreColumn("id", decoration.id, false, undefined, true),
+			name: new VarcharPostgreColumn("name", 30, decoration.name, false, undefined, true),
 			id_dieu: new SmallIntegerPostgreColumn<true>(
 				"id_dieu",
 				dieux.findByNameNullable(decoration.godName)?.id ?? null,
-				{table: "dieu", column: "id"}
+				true,
+				{ table: "dieu", column: "id" },
 			),
 		};
 	}

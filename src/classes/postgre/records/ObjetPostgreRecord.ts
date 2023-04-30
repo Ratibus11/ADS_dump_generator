@@ -17,8 +17,8 @@ class ObjetPostgreRecord extends PostgreRecord<ObjetPostgreObject> {
 	constructor(objet: ObjetEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", objet.id, undefined, true),
-			name: new VarcharPostgreColumn("nom", 30, objet.name, undefined, true),
+			id: new SmallSerialPostgreColumn("id", objet.id, false, undefined, true),
+			name: new VarcharPostgreColumn("nom", 30, objet.name, false, undefined, true),
 		};
 	}
 

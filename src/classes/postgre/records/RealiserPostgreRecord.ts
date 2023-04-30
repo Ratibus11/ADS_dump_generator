@@ -17,8 +17,11 @@ class RealiserPostgreRecord extends PostgreRecord<RealiserPostgreObject> {
 	constructor(commande: CommandeEntityRecord, artisan: string, artisans: ArtisanEntity) {
 		super();
 		this._columns = {
-			id_commande: new IntegerPostgreColumn("id_commande", commande.id, { table: "commande", column: "id" }),
-			id_artisan: new SmallIntegerPostgreColumn("id_artisan", artisans.findByName(artisan).id, {
+			id_commande: new IntegerPostgreColumn("id_commande", commande.id, false, {
+				table: "commande",
+				column: "id",
+			}),
+			id_artisan: new SmallIntegerPostgreColumn("id_artisan", artisans.findByName(artisan).id, false, {
 				table: "artisan",
 				column: "id",
 			}),
