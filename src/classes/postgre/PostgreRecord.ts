@@ -11,11 +11,25 @@ abstract class PostgreRecord<O extends Object> {
 	}
 
 	public get columnsType(): string[] {
-		return Object.values(this._columns).map((e) => e.sqlType);
+		return Object.values(this._columns).map((e) => e.sqlType.toUpperCase());
 	}
 
 	public get columnsName(): string[] {
 		return Object.values(this._columns).map((e) => e.sqlName.toLowerCase());
+	}
+
+	public get references(): { source: string; table: string; column: string }[] {
+		return Object.values(this._columns)
+			.map((e) =>
+				e.reference
+					? {
+							source: e.reference.source.toLowerCase(),
+							table: e.reference.table.toLowerCase(),
+							column: e.reference.column.toLowerCase(),
+					  }
+					: null,
+			)
+			.filter((e) => e !== null) as { source: string; table: string; column: string }[];
 	}
 
 	public get sqlContent(): (string | number)[] {
@@ -25,7 +39,7 @@ abstract class PostgreRecord<O extends Object> {
 			} else if (Number.isInteger(e.value)) {
 				return e.value;
 			} else {
-				return `"${e.value}"`;
+				return `'${(e.value as string).replaceAll("'", "''")}'`;
 			}
 		});
 	}

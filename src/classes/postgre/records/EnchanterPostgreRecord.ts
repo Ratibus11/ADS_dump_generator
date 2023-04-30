@@ -17,8 +17,8 @@ class EnchanterPostgreRecord extends PostgreRecord<EnchanterPostgreObject> {
 	constructor(commande: CommandeEntityRecord, pouvoir: string, pouvoirs: PouvoirEntity) {
 		super();
 		this._columns = {
-			id_commande: new IntegerPostgreColumn("id_commande", commande.id),
-			id_pouvoir: new SmallIntegerPostgreColumn("id_pouvoir", pouvoirs.findByName(pouvoir).id),
+			id_commande: new IntegerPostgreColumn("id_commande", commande.id, {table: "commande", column: "id"}),
+			id_pouvoir: new SmallIntegerPostgreColumn("id_pouvoir", pouvoirs.findByName(pouvoir).id, {table: "pouvoir", column: "id"}),
 		};
 	}
 

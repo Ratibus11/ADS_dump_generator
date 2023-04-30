@@ -4,6 +4,7 @@ import { PostgreRecord } from "../PostgreRecord";
 import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
 import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
 import { IntegerPostgreColumn } from "../columns/IntegerPostgreColumn";
+import { SmallSerialPostgreColumn } from "../columns/SmallSerialPostgreColumn";
 
 type MonnaiePostgreObject = { id: number; unite: string; valeur_bronze: number };
 
@@ -17,7 +18,7 @@ class MonnaiePostgreRecord extends PostgreRecord<MonnaiePostgreObject> {
 	constructor(monnaie: MonnaieEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallIntegerPostgreColumn("id", monnaie.id),
+			id: new SmallSerialPostgreColumn("id", monnaie.id),
 			unit: new VarcharPostgreColumn("unite", 20, monnaie.unit),
 			valueToMinimum: new IntegerPostgreColumn("valeur_bronze", monnaie.valueToMinimum),
 		};

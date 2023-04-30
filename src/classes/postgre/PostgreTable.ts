@@ -15,6 +15,9 @@ abstract class PostgreTable<R extends PostgreRecord<Object>> {
 	protected get _columnNames(): string[] {
 		return this.__records[0].columnsName;
 	}
+	protected get _columnReferences(): { source: string; table: string; column: string }[] {
+		return this.__records[0].references;
+	}
 	protected get _sqlContent(): (string | number)[][] {
 		return this.__records.map((e) => e.sqlContent);
 	}
@@ -46,9 +49,17 @@ abstract class PostgreTable<R extends PostgreRecord<Object>> {
 	}
 
 	private get __sqlHeader(): string {
-		return `CREATE TABLE ${this.__name} (\n${this._columnNames
+		const columns = this._columnNames
 			.map((_, i) => `\t${this._columnNames[i]} ${this._columnTypes[i]}`)
-			.join(",\n")}\n);`;
+			.join(",\n");
+		const references = this._columnReferences
+			.map(
+				(r, i) =>
+					`\tCONSTRAINT fk_${this.__name}_${r.table} FOREIGN KEY(${r.source}) REFERENCES ${r.table}(${r.column})`,
+			)
+			.join(",\n");
+
+		return `CREATE TABLE ${this.__name} (\n${columns}${references.length > 0 ? ",\n" : ""}${references}\n);`;
 	}
 
 	private get __sqlInsertHeader(): string {

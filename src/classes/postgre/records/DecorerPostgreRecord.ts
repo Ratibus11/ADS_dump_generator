@@ -20,8 +20,8 @@ class DecorerPostgreRecord extends PostgreRecord<DecorerPostgreObject> {
 	constructor(commande: CommandeEntityRecord, decoration: string, decorations: DecorationEntity) {
 		super();
 		this._columns = {
-			id_commande: new IntegerPostgreColumn("id_commande", commande.id),
-			id_decoration: new SmallIntegerPostgreColumn("id_decoration", decorations.findByName(decoration).id),
+			id_commande: new IntegerPostgreColumn("id_commande", commande.id, {table: "commande", column: "id"}),
+			id_decoration: new SmallIntegerPostgreColumn("id_decoration", decorations.findByName(decoration).id, {table: "decoration", column: "id"}),
 		};
 	}
 

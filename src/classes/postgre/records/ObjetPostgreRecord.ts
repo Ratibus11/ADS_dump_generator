@@ -4,6 +4,7 @@ import { PostgreColumnContainer } from "../PostgreColumnContainer";
 import { PostgreRecord } from "../PostgreRecord";
 import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
 import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
+import { SmallSerialPostgreColumn } from "../columns/SmallSerialPostgreColumn";
 
 type ObjetPostgreObject = { id: number; nom: string };
 
@@ -16,7 +17,7 @@ class ObjetPostgreRecord extends PostgreRecord<ObjetPostgreObject> {
 	constructor(objet: ObjetEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallIntegerPostgreColumn("id", objet.id),
+			id: new SmallSerialPostgreColumn("id", objet.id),
 			name: new VarcharPostgreColumn("nom", 30, objet.name),
 		};
 	}

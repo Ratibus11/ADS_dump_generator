@@ -125,12 +125,12 @@ tables.objet.inserts(entities.objets.records);
 tables.objet.saveAsJson();
 tables.objet.saveAsSql();
 
-entities.commandes.records.forEach((e) => tables.commande.insert(e, entities.objets, entities.provinces));
+[entities.commandes.records[0]].forEach((e) => tables.commande.insert(e, entities.objets, entities.provinces));
 tables.commande.saveAsJson();
 tables.commande.saveAsSql();
 tables.commande.prune();
 
-entities.commandes.records.forEach(e => tables.couter.insert(e, entities.monnaies));
+entities.commandes.records.forEach((e) => tables.couter.insert(e, entities.monnaies));
 tables.couter.saveAsJson();
 tables.couter.saveAsSql();
 tables.couter.prune();

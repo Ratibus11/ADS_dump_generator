@@ -4,6 +4,7 @@ import { PostgreRecord } from "../PostgreRecord";
 import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
 import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
 import { PostgreColumn } from "../PostgreColumn";
+import { SmallSerialPostgreColumn } from "../columns/SmallSerialPostgreColumn";
 
 type ArtisanPostgreObject = { id: number; nom: string };
 
@@ -16,7 +17,7 @@ class ArtisanPostgreRecord extends PostgreRecord<ArtisanPostgreObject> {
 	constructor(artisan: ArtisanEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallIntegerPostgreColumn("id", artisan.id),
+			id: new SmallSerialPostgreColumn("id", artisan.id),
 			name: new VarcharPostgreColumn("nom", 20, artisan.name),
 		};
 	}

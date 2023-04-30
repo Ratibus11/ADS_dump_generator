@@ -4,6 +4,7 @@ import { PostgreRecord } from "../PostgreRecord";
 import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
 import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
 import { PostgreColumn } from "../PostgreColumn";
+import { SmallSerialPostgreColumn } from "../columns/SmallSerialPostgreColumn";
 
 type DieuPostgreObject = { id: number; nom: string };
 
@@ -16,7 +17,7 @@ class DieuPostgreRecord extends PostgreRecord<DieuPostgreObject> {
 	constructor(dieu: DieuEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallIntegerPostgreColumn("id", dieu.id),
+			id: new SmallSerialPostgreColumn("id", dieu.id),
 			name: new VarcharPostgreColumn("name", 20, dieu.name),
 		};
 	}

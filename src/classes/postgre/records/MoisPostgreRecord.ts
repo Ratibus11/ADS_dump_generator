@@ -5,6 +5,7 @@ import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn"
 import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
 import { PostgreColumn } from "../PostgreColumn";
 import { DieuEntity } from "src/classes/entities/entities/DieuEntity";
+import { SmallSerialPostgreColumn } from "../columns/SmallSerialPostgreColumn";
 
 type MoisPostgreObject = { id: number; nom: string; id_dieu: number };
 
@@ -18,9 +19,9 @@ class MoisPostgreRecord extends PostgreRecord<MoisPostgreObject> {
 	constructor(mois: MoisEntityRecord, dieux: DieuEntity) {
 		super();
 		this._columns = {
-			id: new SmallIntegerPostgreColumn("id", mois.id),
+			id: new SmallSerialPostgreColumn("id", mois.id),
 			name: new VarcharPostgreColumn("name", 20, mois.name),
-			id_god: new SmallIntegerPostgreColumn("id_dieu", dieux.findByName(mois.godName)?.id),
+			id_god: new SmallIntegerPostgreColumn("id_dieu", dieux.findByName(mois.godName)?.id, {table: "dieu", column: "id"}),
 		};
 	}
 

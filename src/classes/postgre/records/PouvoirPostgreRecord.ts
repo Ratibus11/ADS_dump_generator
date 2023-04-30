@@ -5,6 +5,7 @@ import { PostgreColumnContainer } from "../PostgreColumnContainer";
 import { PostgreRecord } from "../PostgreRecord";
 import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
 import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
+import { SmallSerialPostgreColumn } from "../columns/SmallSerialPostgreColumn";
 
 type PouvoirPostgreObject = { id: number; nom: string; id_dieu: number | null };
 
@@ -18,11 +19,12 @@ class PouvoirPostgreRecord extends PostgreRecord<PouvoirPostgreObject> {
 	constructor(pouvoir: PouvoirEntityRecord, dieux: DieuEntity) {
 		super();
 		this._columns = {
-			id: new SmallIntegerPostgreColumn("id", pouvoir.id),
+			id: new SmallSerialPostgreColumn("id", pouvoir.id),
 			name: new VarcharPostgreColumn("name", 30, pouvoir.name),
 			id_dieu: new SmallIntegerPostgreColumn<true>(
 				"id_dieu",
 				dieux.findByNameNullable(pouvoir.godName)?.id ?? null,
+				{table: "dieu", column: "id"}
 			),
 		};
 	}
