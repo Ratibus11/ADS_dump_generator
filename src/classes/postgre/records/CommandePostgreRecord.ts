@@ -34,12 +34,11 @@ class CommandePostgreRecord extends PostgreRecord<CommandePostgreObject> {
 		this._columns = {
 			id: new SerialPostgreColumn("id", commande.id, false, undefined, true),
 			quantity: new IntegerPostgreColumn("quantite", commande.quantity, false),
-			id_decoration: new SmallIntegerPostgreColumn<true>(
+			id_decoration: new SmallIntegerPostgreColumn(
 				"id_decoration",
 				decorations.findByNameNullable(commande.decorationName)?.id ?? null,
 				true,
 				{ table: "decoration", column: "id" },
-				true,
 			),
 			id_objet: new SmallIntegerPostgreColumn("id_objet", objets.findByName(commande.objectName).id, false, {
 				table: "objet",
