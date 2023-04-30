@@ -9,6 +9,10 @@ class MoisCsvFile extends CsvFile<MoisCsvRecord, MoisCsvObject, 2> {
 	public get months(): string[] {
 		return this.__RECORDS.map((e) => e.name);
 	}
+
+	public get gods(): string[] {
+		return this.__RECORDS.map((e) => e.godName);
+	}
 }
 
 export { MoisCsvFile };

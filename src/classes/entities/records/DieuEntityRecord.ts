@@ -3,7 +3,7 @@ import { EntityRecord } from "../EntityRecord";
 type DieuEntityObject = { id: number; name: string };
 
 class DieuEntityRecord extends EntityRecord<DieuEntityObject> {
-	private static __auto_increment: number = 0;
+	private static __auto_increment: number = 1;
 
 	private readonly __id: number;
 	private readonly __name: string;
@@ -19,6 +19,14 @@ class DieuEntityRecord extends EntityRecord<DieuEntityObject> {
 			id: this.__id,
 			name: this.__name,
 		};
+	}
+
+	public get name() {
+		return this.__name;
+	}
+
+	public get id() {
+		return this.__id;
 	}
 }
 

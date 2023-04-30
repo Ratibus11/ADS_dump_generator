@@ -6,8 +6,8 @@ class VentesCsvFile extends CsvFile<VenteCsvRecord, VenteCsvObject, 10> {
 		super("ventes", VenteCsvRecord, 10, false);
 	}
 
-	public get makersNames(): string[] {
-		return this.__RECORDS.map((e) => e.makersName).flat();
+	public get makersNames(): string[][] {
+		return this.__RECORDS.map((e) => e.makersName);
 	}
 
 	public get quantities(): number[] {
@@ -18,22 +18,20 @@ class VentesCsvFile extends CsvFile<VenteCsvRecord, VenteCsvObject, 10> {
 		return this.__RECORDS.map((e) => e.objectName);
 	}
 
-	public get decorations(): string[] {
-		return this.__RECORDS
-			.map((e) => e.decorationsName)
-			.filter((e) => Array.isArray(e))
-			.flat() as string[];
+	public get decorations(): (string[] | null)[] {
+		return this.__RECORDS.map((e) => e.decorationsName);
 	}
 
-	public get powers(): string[] {
-		return this.__RECORDS
-			.map((e) => e.powersName)
-			.filter((e) => e != null)
-			.flat() as string[];
+	public get powers(): (string[] | null)[] {
+		return this.__RECORDS.map((e) => e.powersName);
 	}
 
-	public get payments(): { gold: number; silver: number; iron: number }[] {
+	public get payments(): { gold: [string, number]; silver: [string, number]; iron: [string, number] }[] {
 		return this.__RECORDS.map((e) => e.payment);
+	}
+
+	public get provinces() {
+		return this.__RECORDS.map((e) => e.provinceName);
 	}
 }
 

@@ -1,15 +1,11 @@
 import { PostgreColumn } from "../PostgreColumn";
 
-class VarcharPostgreColumn extends PostgreColumn<string> {
-    private readonly __size: number;
+class VarcharPostgreColumn<N extends boolean = false> extends PostgreColumn<string, N> {
+	private readonly __size: number;
 
-    constructor(name: string, size: number, value: string) {
-        super(name, "VARCHAR", value);
-        this.__size = size;
-    }
-
-    protected _isValidData(value: string): boolean {
-		return this._value.length <= this.__size;
+	constructor(name: string, size: number, value: N extends false ? string : string | null) {
+		super(name, `VARCHAR(${size})`, value, value == null ? true : value.length <= size);
+		this.__size = size;
 	}
 }
 

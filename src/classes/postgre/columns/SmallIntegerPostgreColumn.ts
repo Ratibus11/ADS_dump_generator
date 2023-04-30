@@ -1,12 +1,8 @@
 import { PostgreColumn } from "../PostgreColumn";
 
-class SmallIntegerPostgreColumn extends PostgreColumn<number> {
-	constructor(name: string, value: number) {
-		super(name, "SMALLINT", value);
-	}
-
-	protected _isValidData(value: number): boolean {
-		return -32768 <= this._value && this._value <= 32767
+class SmallIntegerPostgreColumn<N extends boolean = false> extends PostgreColumn<number, N> {
+	constructor(name: string, value: N extends false ? number : number | null) {
+		super(name, "SMALLINT", value, value == null ? true :  -32768 <= value && value <= 32767);
 	}
 }
 

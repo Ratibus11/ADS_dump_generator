@@ -20,11 +20,11 @@ class MonnaieCsvRecord extends CsvRecord<3, MonnaieCsvObject> {
 	}
 
 	private __cleanConvertionToMinimum(): typeof this.__convertionToMinimum {
-		return Number.parseInt(this.data[1].replace('"', "").trim());
+		return Number.parseInt(this.data[1].replaceAll('"', "").trim());
 	}
 
 	private __cleanUnit(): typeof this.__unit {
-		return this.data[2].trim().toUpperCase();
+		return this.data[2].trim().replaceAll('"', "").toUpperCase();
 	}
 
 	public toObject(): MonnaieCsvObject {

@@ -1,13 +1,39 @@
+import { DecorationEntityRecord } from "src/classes/entities/records/DecorationEntityRecord";
+import { PostgreColumn } from "../PostgreColumn";
+import { PostgreColumnContainer } from "../PostgreColumnContainer";
 import { PostgreRecord } from "../PostgreRecord";
+import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
+import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
+import { DieuEntity } from "src/classes/entities/entities/DieuEntity";
 
-type DecorationPostgreObject = {};
+type DecorationPostgreObject = { id: number; nom: string; id_dieu: number | null };
 
 class DecorationPostgreRecord extends PostgreRecord<DecorationPostgreObject> {
-    protected _columns = {};
-    
-    protected override toObject(): DecorationPostgreObject {
-        return {}
-    }
+	protected _columns: {
+		id: PostgreColumn<number>;
+		name: PostgreColumn<string>;
+		id_dieu: PostgreColumn<number, true>;
+	};
+
+	constructor(decoration: DecorationEntityRecord, dieux: DieuEntity) {
+		super();
+		this._columns = {
+			id: new SmallIntegerPostgreColumn("id", decoration.id),
+			name: new VarcharPostgreColumn("name", 30, decoration.name),
+			id_dieu: new SmallIntegerPostgreColumn<true>(
+				"id_dieu",
+				dieux.findByNameNullable(decoration.godName)?.id ?? null,
+			),
+		};
+	}
+
+	protected toObject(): DecorationPostgreObject {
+		return {
+			id: this._columns.id.value,
+			nom: this._columns.name.value,
+			id_dieu: this._columns.id_dieu?.value ?? null,
+		};
+	}
 }
 
 export { DecorationPostgreRecord, DecorationPostgreObject };

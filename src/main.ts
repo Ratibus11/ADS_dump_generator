@@ -20,11 +20,9 @@ import { ArtisanPostgreTable } from "./classes/postgre/tables/ArtisanPostgreTabl
 import { CommandePostgreTable } from "./classes/postgre/tables/CommandePostgreTable";
 import { CouterPostgreTable } from "./classes/postgre/tables/CouterPostgreTable";
 import { DecorationPostgreTable } from "./classes/postgre/tables/DecorationPostgreTable";
-import { DecorerCommandeDecorationPostgreTable } from "./classes/postgre/tables/DecorerCommandeDecorationPostgreTable";
-import { DecorerDecorationDieuPostgreTable } from "./classes/postgre/tables/DecorerDecorartionDieuPostgreTable";
+import { DecorerPostgreTable } from "./classes/postgre/tables/DecorerPostgreTable";
 import { DieuPostgreTable } from "./classes/postgre/tables/DieuPostgreTable";
-import { EnchanterCommandePouvoirPostgreTable } from "./classes/postgre/tables/EnchanterCommandePouvoirPostgreTable";
-import { EnchanterDieuPouvoirPostgreTable } from "./classes/postgre/tables/EnchanterDieuPouvoirPostgreTable";
+import { EnchanterPostgreTable } from "./classes/postgre/tables/EnchanterPostgreTable";
 import { MoisPostgreTable } from "./classes/postgre/tables/MoisPostgreTable";
 import { MonnaiePostgreTable } from "./classes/postgre/tables/MonnaiePostgreTable";
 import { ObjetPostgreTable } from "./classes/postgre/tables/ObjetPostgreTable";
@@ -32,7 +30,7 @@ import { PouvoirPostgreTable } from "./classes/postgre/tables/PouvoirPostgreTabl
 import { ProvincePostgreTable } from "./classes/postgre/tables/ProvincePostgreTable";
 import { RealiserPostgreTable } from "./classes/postgre/tables/RealiserPostgreTable";
 
-const inputs = {
+let inputs = {
 	demiDieux: new DemiDieuxCsvFile(),
 	guerres: new GuerresCsvFile(),
 	mois: new MoisCsvFile(),
@@ -43,7 +41,7 @@ const inputs = {
 
 Object.values(inputs).forEach((input) => input.saveAsJson());
 
-const entites = {
+let entities = {
 	artisans: new ArtisanEntity(),
 	commandes: new CommandeEntity(),
 	decorations: new DecorationEntity(),
@@ -55,35 +53,50 @@ const entites = {
 	provinces: new ProvinceEntity(),
 };
 
-entites.artisans.inserts(UniqueArray.of(inputs.ventes.makersNames).sort());
-entites.commandes.inserts(
-	inputs.ventes.quantities,
-	inputs.ventes.payments.map((e) => Object.values(e) as [number, number, number]),
+entities.artisans.inserts(UniqueArray.of(inputs.ventes.makersNames.flat()).sort());
+entities.objets.inserts(UniqueArray.of(inputs.ventes.objects).sort());
+entities.dieux.inserts(UniqueArray.of(inputs.demiDieux.gods).sort());
+entities.mois.inserts(UniqueArray.of(inputs.mois.months).sort(), inputs.mois.gods);
+entities.pouvoirs.inserts(
+	UniqueArray.of((inputs.ventes.powers.filter((e) => Array.isArray(e)) as string[][]).flat()).sort(),
+	entities.dieux,
 );
-entites.decorations.inserts(UniqueArray.of(inputs.ventes.decorations).sort());
-entites.dieux.inserts(UniqueArray.of(inputs.demiDieux.gods).sort());
-entites.mois.inserts(UniqueArray.of(inputs.mois.months).sort());
-entites.monnaies.inserts(
+entities.provinces.inserts(UniqueArray.of(inputs.provinces.regionNames).sort());
+entities.monnaies.inserts(
 	(lodash.zip(inputs.monnaies.units, inputs.monnaies.convertionsToMinimum) as [string, number][]).sort(
 		(a, b) => b[1] - a[1],
 	),
 );
-entites.objets.inserts(UniqueArray.of(inputs.ventes.objects).sort());
-entites.pouvoirs.inserts(UniqueArray.of(inputs.ventes.powers).sort());
-entites.provinces.inserts(UniqueArray.of(inputs.provinces.regionNames).sort());
 
-Object.values(entites).forEach((input) => input.saveAsJson());
+entities.decorations.inserts(
+	UniqueArray.of((inputs.ventes.decorations.filter((e) => Array.isArray(e)) as string[][]).flat()).sort(),
+	entities.dieux,
+);
 
-const tables = {
+inputs.ventes.records.forEach((r) => {
+	entities.commandes.insert(
+		r.quantity,
+		Object.values(r.payment).map((e) => e[1]) as [number, number, number],
+		r.objectName,
+		r.provinceName,
+		r.decorationsName,
+		r.powersName,
+		Object.values(r.payment).map((e) => e[0]) as [string, string, string],
+		r.makersName,
+	);
+});
+
+Object.values(inputs).forEach((entity) => entity.prune());
+Object.values(entities).forEach((entity) => entity.saveAsJson());
+
+let tables = {
 	artisan: new ArtisanPostgreTable(),
 	commande: new CommandePostgreTable(),
 	couter: new CouterPostgreTable(),
 	decoration: new DecorationPostgreTable(),
-	decorerCommandeDecoration: new DecorerCommandeDecorationPostgreTable(),
-	decorerDecorationDieu: new DecorerDecorationDieuPostgreTable(),
+	decorer: new DecorerPostgreTable(),
 	dieu: new DieuPostgreTable(),
-	enchanterCommandePouvoir: new EnchanterCommandePouvoirPostgreTable(),
-	enchanterDieuPouvoir: new EnchanterDieuPouvoirPostgreTable(),
+	enchanter: new EnchanterPostgreTable(),
 	mois: new MoisPostgreTable(),
 	monnaie: new MonnaiePostgreTable(),
 	objet: new ObjetPostgreTable(),
@@ -92,4 +105,58 @@ const tables = {
 	realiser: new RealiserPostgreTable(),
 };
 
-Object.values(tables).forEach((input) => input.saveAsJson());
+tables.artisan.inserts(entities.artisans.records);
+tables.artisan.saveAsJson();
+tables.artisan.saveAsSql();
+
+tables.province.inserts(entities.provinces.records);
+tables.province.saveAsJson();
+tables.province.saveAsSql();
+
+tables.dieu.inserts(entities.dieux.records);
+tables.dieu.saveAsJson();
+tables.dieu.saveAsSql();
+
+tables.monnaie.inserts(entities.monnaies.records);
+tables.monnaie.saveAsJson();
+tables.monnaie.saveAsSql();
+
+tables.objet.inserts(entities.objets.records);
+tables.objet.saveAsJson();
+tables.objet.saveAsSql();
+
+entities.commandes.records.forEach((e) => tables.commande.insert(e, entities.objets, entities.provinces));
+tables.commande.saveAsJson();
+tables.commande.saveAsSql();
+tables.commande.prune();
+
+entities.commandes.records.forEach(e => tables.couter.insert(e, entities.monnaies));
+tables.couter.saveAsJson();
+tables.couter.saveAsSql();
+tables.couter.prune();
+
+tables.decoration.inserts(entities.decorations.records, entities.dieux);
+tables.decoration.saveAsJson();
+tables.decoration.saveAsSql();
+
+tables.pouvoir.inserts(entities.pouvoirs.records, entities.dieux);
+tables.pouvoir.saveAsJson();
+tables.pouvoir.saveAsSql();
+
+tables.mois.inserts(entities.mois.records, entities.dieux);
+tables.mois.saveAsJson();
+tables.mois.saveAsSql();
+
+entities.commandes.records.forEach((e) => tables.decorer.insert(e, entities.decorations));
+tables.decorer.saveAsJson();
+tables.decorer.saveAsSql();
+tables.decorer.prune();
+
+entities.commandes.records.forEach((e) => tables.enchanter.insert(e, entities.pouvoirs));
+tables.enchanter.saveAsJson();
+tables.enchanter.saveAsSql();
+tables.enchanter.prune();
+
+entities.commandes.records.forEach((e) => tables.realiser.insert(e, entities.artisans));
+tables.realiser.saveAsJson();
+tables.realiser.saveAsSql();

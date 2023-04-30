@@ -3,7 +3,7 @@ import { EntityRecord } from "../EntityRecord";
 type MonnaieEntityObject = { id: number; unit: string; convertion_to_minimum: number };
 
 class MonnaieEntityRecord extends EntityRecord<MonnaieEntityObject> {
-	private static __auto_increment: number = 0;
+	private static __auto_increment: number = 1;
 
 	private readonly __id: number;
 	private readonly __unit: string;
@@ -22,6 +22,18 @@ class MonnaieEntityRecord extends EntityRecord<MonnaieEntityObject> {
 			unit: this.__unit,
 			convertion_to_minimum: this.__convertionToMinimum,
 		};
+	}
+
+	public get unit() {
+		return this.__unit;
+	}
+
+	public get id() {
+		return this.__id;
+	}
+
+	public get valueToMinimum() {
+		return this.__convertionToMinimum;
 	}
 }
 

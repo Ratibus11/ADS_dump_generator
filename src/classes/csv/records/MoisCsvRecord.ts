@@ -14,11 +14,11 @@ class MoisCsvRecord extends CsvRecord<2, MoisCsvObject> {
 	}
 
 	private __cleanMonthName(): typeof this.__name {
-		return this.data[0].trim().toUpperCase();
+		return this.data[0].trim().replaceAll('"', "").toUpperCase();
 	}
 
 	private __cleanGodName(): typeof this.__godName {
-		return this.data[1].trim().toUpperCase();
+		return this.data[1].trim().replaceAll('"', "").toUpperCase();
 	}
 
 	public toObject(): MoisCsvObject {
@@ -30,6 +30,10 @@ class MoisCsvRecord extends CsvRecord<2, MoisCsvObject> {
 
 	public get name(): typeof this.__name {
 		return this.__name;
+	}
+
+	public get godName() {
+		return this.__godName;
 	}
 }
 

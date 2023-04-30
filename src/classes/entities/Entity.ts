@@ -33,6 +33,18 @@ abstract class Entity<R extends EntityRecord<Object>> {
 		fs.appendFileSync(filePath, "]");
 		console.log(`${path.basename(path.dirname(filePath))} writed.`);
 	}
+
+	protected find(value: any, callback: (record: R, index: number, obj: R[]) => boolean): R {
+		const record = this.__records.find(callback);
+		if (record == undefined) {
+			throw Error(`Cannot find ${value} in ${this.__name}`);
+		}
+		return record;
+	}
+
+	public get records() {
+		return this.__records;
+	}
 }
 
 export { Entity };

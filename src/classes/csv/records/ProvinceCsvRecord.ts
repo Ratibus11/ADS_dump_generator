@@ -17,7 +17,7 @@ class ProvinceCsvRecord extends CsvRecord<2, ProvinceCsvObject> {
 	}
 
 	private __cleanRegionName(): typeof this.__regionName {
-		return this.data[0].trim().toUpperCase();
+		return this.data[0].trim().replaceAll('"', "").toUpperCase();
 	}
 
 	private __cleanCityName(): typeof this.__cityName {

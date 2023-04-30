@@ -18,7 +18,7 @@ class DemiDieuCsvRecord extends CsvRecord<2, DemiDieuCsvObject> {
 	}
 
 	private __cleanParentGodName(): typeof this.__parentGodName {
-		return this.data[1].trim().toUpperCase();
+		return this.data[1].replaceAll('"', "").trim().toUpperCase();
 	}
 
 	public toObject(): DemiDieuCsvObject {

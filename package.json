@@ -2,7 +2,7 @@
 	"private": true,
 	"name": "yfancorp_dump_generator",
 	"displayName": "Ýfancorp - Dump generator",
-	"description": "CESI École d'Ingénieurs - A4 FISE Info - 2022-2023 - Par Lucas Bastian",
+	"description": "CESI École d'Ingénieurs - ADS - A4 FISE Info - 2022-2023 - Lucas Bastian - dump_generator",
 	"author": {
 		"name": "Lucas Bastian",
 		"url": "https://github.com/ratibus11",

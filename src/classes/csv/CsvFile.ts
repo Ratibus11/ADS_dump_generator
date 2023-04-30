@@ -56,6 +56,10 @@ abstract class CsvFile<R extends CsvRecord<S, O>, O extends Object, S extends nu
 		fs.appendFileSync(filePath, "]");
 		console.log(`${path.basename(path.dirname(filePath))} writed.`);
 	}
+
+	public prune() {
+		this.__RECORDS.length = 0;
+	}
 }
 
 export { CsvFile };

@@ -46,7 +46,7 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 
 	private __cleanDate(): typeof this.__date {
 		let [day, month, year] = this.data[0].split(" ").filter((e) => e != "");
-		return [Number.parseInt(day.replace('"', "")), month.toUpperCase(), Number.parseInt(year)];
+		return [Number.parseInt(day.replaceAll('"', "")), month.toUpperCase(), Number.parseInt(year)];
 	}
 
 	private __cleanObjectName(): typeof this.__objectName {
@@ -128,12 +128,16 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 		return this.__objectName;
 	}
 
-	public get payment(): { gold: number; silver: number; iron: number } {
+	public get payment(): { gold: [string, number]; silver: [string, number]; iron: [string, number] } {
 		return {
-			gold: this.__paiedGoldQuantity,
-			silver: this.__paiedSilverQuantity,
-			iron: this.__paiedIronQuantity,
+			gold: ["OO", this.__paiedGoldQuantity],
+			silver: ["OA", this.__paiedSilverQuantity],
+			iron: ["OF", this.__paiedIronQuantity],
 		};
+	}
+
+	public get provinceName() {
+		return this.__regionName;
 	}
 }
 

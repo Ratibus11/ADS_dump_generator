@@ -1,12 +1,31 @@
+import { ProvinceEntityRecord } from "src/classes/entities/records/ProvinceEntityRecord";
+import { PostgreColumnContainer } from "../PostgreColumnContainer";
 import { PostgreRecord } from "../PostgreRecord";
+import { SmallIntegerPostgreColumn } from "../columns/SmallIntegerPostgreColumn";
+import { VarcharPostgreColumn } from "../columns/VarcharPostgreColumn";
+import { PostgreColumn } from "../PostgreColumn";
 
-type ProvincePostgreObject = {};
+type ProvincePostgreObject = { id: number; nom: string };
 
 class ProvincePostgreRecord extends PostgreRecord<ProvincePostgreObject> {
-	protected _columns = {};
-	
-	protected override toObject(): ProvincePostgreObject {
-		return {};
+	protected _columns: {
+		id: PostgreColumn<number>;
+		name: PostgreColumn<string>;
+	};
+
+	constructor(province: ProvinceEntityRecord) {
+		super();
+		this._columns = {
+			id: new SmallIntegerPostgreColumn("id", province.id),
+			name: new VarcharPostgreColumn("nom", 20, province.name),
+		};
+	}
+
+	protected toObject(): ProvincePostgreObject {
+		return {
+			id: this._columns.id.value,
+			nom: this._columns.name.value,
+		};
 	}
 }
 
