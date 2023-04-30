@@ -8,6 +8,7 @@ abstract class PostgreTable<R extends PostgreRecord<Object>> {
 	private static readonly __PATH_TO_OUTPUT = path.resolve(Path.pathToJson, "tmp/postgre");
 	private static readonly __PATH_TO_SQL = path.resolve(Path.pathToJson, "output");
 	private static readonly __JSON_LIMIT: number = 1000;
+	private static readonly __SQL_LIMIT: number = 1500000;
 
 	protected get _columnTypes(): string[] {
 		return this.__records[0].columnsType;
@@ -67,13 +68,31 @@ abstract class PostgreTable<R extends PostgreRecord<Object>> {
 	}
 
 	public saveAsSql(): void {
-		const filePath = path.resolve(PostgreTable.__PATH_TO_SQL, `${this.__name}.sql`);
+		const filePath = path.resolve(
+			PostgreTable.__PATH_TO_SQL,
+			`${this.__name}${this.__records.length <= PostgreTable.__SQL_LIMIT ? "" : "_1"}.sql`,
+		);
+		fs.writeFileSync(filePath, `${this.__sqlHeader}\n\n`);
 
-		fs.writeFileSync(filePath, `${this.__sqlHeader}\n\n${this.__sqlInsertHeader}`);
-		this.__records.forEach((e, i) => {
-			fs.appendFileSync(filePath, `\t(${e.sqlContent.join(", ")})`);
-			fs.appendFileSync(filePath, i == this.__records.length - 1 ? ";" : ",\n");
-		});
+		for (let fileIndex = 1; fileIndex <= Math.ceil(this.__records.length / PostgreTable.__SQL_LIMIT); fileIndex++) {
+			const filePath = path.resolve(
+				PostgreTable.__PATH_TO_SQL,
+				`${this.__name}${this.__records.length <= PostgreTable.__SQL_LIMIT ? "" : `_${fileIndex}`}.sql`,
+			);
+
+			fs.appendFileSync(filePath, `${this.__sqlInsertHeader}`);
+
+			const iMin = (fileIndex - 1) * PostgreTable.__SQL_LIMIT;
+			const iMax =
+				(fileIndex * PostgreTable.__SQL_LIMIT - 1 > this.__records.length
+					? this.__records.length
+					: fileIndex * PostgreTable.__SQL_LIMIT) - 1;
+
+			for (let recordIndex = iMin; recordIndex <= iMax; recordIndex++) {
+				fs.appendFileSync(filePath, `\t(${this.__records[recordIndex].sqlContent.join(", ")})`);
+				fs.appendFileSync(filePath, recordIndex < iMax ? ",\n" : ";");
+			}
+		}
 	}
 
 	public prune() {

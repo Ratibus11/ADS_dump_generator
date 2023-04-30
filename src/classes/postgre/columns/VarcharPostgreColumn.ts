@@ -8,8 +8,9 @@ class VarcharPostgreColumn<N extends boolean = false> extends PostgreColumn<stri
 		size: number,
 		value: N extends false ? string : string | null,
 		reference?: { table: string; column: string },
+		unique: boolean = false
 	) {
-		super(name, `VARCHAR(${size})`, value, value == null ? true : value.length <= size, reference);
+		super(name, `VARCHAR(${size})`, value, value == null ? true : value.length <= size, reference, unique);
 		this.__size = size;
 	}
 }

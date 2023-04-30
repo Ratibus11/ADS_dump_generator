@@ -17,8 +17,8 @@ class ArtisanPostgreRecord extends PostgreRecord<ArtisanPostgreObject> {
 	constructor(artisan: ArtisanEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", artisan.id),
-			name: new VarcharPostgreColumn("nom", 20, artisan.name),
+			id: new SmallSerialPostgreColumn("id", artisan.id, undefined, true),
+			name: new VarcharPostgreColumn("nom", 20, artisan.name, undefined, true),
 		};
 	}
 

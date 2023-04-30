@@ -5,8 +5,9 @@ class IntegerPostgreColumn<N extends boolean = false> extends PostgreColumn<numb
 		name: string,
 		value: N extends false ? number : number | null,
 		reference?: { table: string; column: string },
+		unique: boolean = false
 	) {
-		super(name, "INTEGER", value, value == null ? true : -2147483648 <= value && value <= 2147483647, reference);
+		super(name, "INTEGER", value, value == null ? true : -2147483648 <= value && value <= 2147483647, reference, unique);
 	}
 }
 

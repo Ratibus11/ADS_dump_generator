@@ -18,8 +18,8 @@ class MonnaiePostgreRecord extends PostgreRecord<MonnaiePostgreObject> {
 	constructor(monnaie: MonnaieEntityRecord) {
 		super();
 		this._columns = {
-			id: new SmallSerialPostgreColumn("id", monnaie.id),
-			unit: new VarcharPostgreColumn("unite", 20, monnaie.unit),
+			id: new SmallSerialPostgreColumn("id", monnaie.id, undefined, true),
+			unit: new VarcharPostgreColumn("unite", 20, monnaie.unit, undefined, true),
 			valueToMinimum: new IntegerPostgreColumn("valeur_bronze", monnaie.valueToMinimum),
 		};
 	}

@@ -39,7 +39,7 @@ let inputs = {
 	ventes: new VentesCsvFile(),
 };
 
-Object.values(inputs).forEach((input) => input.saveAsJson());
+//Object.values(inputs).forEach((input) => input.saveAsJson());
 
 let entities = {
 	artisans: new ArtisanEntity(),
@@ -87,7 +87,7 @@ inputs.ventes.records.forEach((r) => {
 });
 
 Object.values(inputs).forEach((entity) => entity.prune());
-Object.values(entities).forEach((entity) => entity.saveAsJson());
+//Object.values(entities).forEach((entity) => entity.saveAsJson());
 
 let tables = {
 	artisan: new ArtisanPostgreTable(),
@@ -106,57 +106,57 @@ let tables = {
 };
 
 tables.artisan.inserts(entities.artisans.records);
-tables.artisan.saveAsJson();
+//tables.artisan.saveAsJson();
 tables.artisan.saveAsSql();
 
 tables.province.inserts(entities.provinces.records);
-tables.province.saveAsJson();
+//tables.province.saveAsJson();
 tables.province.saveAsSql();
 
 tables.dieu.inserts(entities.dieux.records);
-tables.dieu.saveAsJson();
+//tables.dieu.saveAsJson();
 tables.dieu.saveAsSql();
 
 tables.monnaie.inserts(entities.monnaies.records);
-tables.monnaie.saveAsJson();
+//tables.monnaie.saveAsJson();
 tables.monnaie.saveAsSql();
 
 tables.objet.inserts(entities.objets.records);
-tables.objet.saveAsJson();
+//tables.objet.saveAsJson();
 tables.objet.saveAsSql();
 
-[entities.commandes.records[0]].forEach((e) => tables.commande.insert(e, entities.objets, entities.provinces));
-tables.commande.saveAsJson();
+entities.commandes.records.forEach((e) => tables.commande.insert(e, entities.objets, entities.provinces));
+//tables.commande.saveAsJson();
 tables.commande.saveAsSql();
 tables.commande.prune();
 
 entities.commandes.records.forEach((e) => tables.couter.insert(e, entities.monnaies));
-tables.couter.saveAsJson();
+//tables.couter.saveAsJson();
 tables.couter.saveAsSql();
 tables.couter.prune();
 
 tables.decoration.inserts(entities.decorations.records, entities.dieux);
-tables.decoration.saveAsJson();
+//tables.decoration.saveAsJson();
 tables.decoration.saveAsSql();
 
 tables.pouvoir.inserts(entities.pouvoirs.records, entities.dieux);
-tables.pouvoir.saveAsJson();
+//tables.pouvoir.saveAsJson();
 tables.pouvoir.saveAsSql();
 
 tables.mois.inserts(entities.mois.records, entities.dieux);
-tables.mois.saveAsJson();
+//tables.mois.saveAsJson();
 tables.mois.saveAsSql();
 
 entities.commandes.records.forEach((e) => tables.decorer.insert(e, entities.decorations));
-tables.decorer.saveAsJson();
+//tables.decorer.saveAsJson();
 tables.decorer.saveAsSql();
 tables.decorer.prune();
 
 entities.commandes.records.forEach((e) => tables.enchanter.insert(e, entities.pouvoirs));
-tables.enchanter.saveAsJson();
+//tables.enchanter.saveAsJson();
 tables.enchanter.saveAsSql();
 tables.enchanter.prune();
 
 entities.commandes.records.forEach((e) => tables.realiser.insert(e, entities.artisans));
-tables.realiser.saveAsJson();
+//tables.realiser.saveAsJson();
 tables.realiser.saveAsSql();

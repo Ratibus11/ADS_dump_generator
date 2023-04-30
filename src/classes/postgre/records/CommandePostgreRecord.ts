@@ -25,7 +25,7 @@ class CommandePostgreRecord extends PostgreRecord<CommandePostgreObject> {
 	constructor(commande: CommandeEntityRecord, objets: ObjetEntity, provinces: ProvinceEntity) {
 		super();
 		this._columns = {
-			id: new SerialPostgreColumn("id", commande.id),
+			id: new SerialPostgreColumn("id", commande.id, undefined, true),
 			quantity: new IntegerPostgreColumn("quantite", commande.quantity),
 			id_objet: new SmallIntegerPostgreColumn("id_objet", objets.findByName(commande.objectName).id, {table: "objet", column: "id"}),
 			id_province: new SmallIntegerPostgreColumn("id_province", provinces.findByName(commande.provinceName).id, {table: "province", column: "id"}),
