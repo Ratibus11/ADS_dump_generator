@@ -8,13 +8,13 @@ class PouvoirEntityRecord extends EntityRecord<PouvoirEntityObject> {
 
 	private readonly __id: number;
 	private readonly __name: string;
-	private readonly __god: string | null;
+	private readonly __god: string;
 
 	constructor(name: string, gods: DieuEntity) {
 		super();
 		this.__id = PouvoirEntityRecord.__auto_increment++;
 		this.__name = name;
-		this.__god = gods.names.find((e) => name.includes(e)) ?? null;
+		this.__god = gods.names.find((e) => name.includes(e)) as string;
 	}
 
 	public toObject(): PouvoirEntityObject {

@@ -21,10 +21,10 @@ class PouvoirPostgreRecord extends PostgreRecord<PouvoirPostgreObject> {
 		this._columns = {
 			id: new SmallSerialPostgreColumn("id", pouvoir.id, false, undefined, true),
 			name: new VarcharPostgreColumn("name", 30, pouvoir.name, false, undefined, true),
-			id_dieu: new SmallIntegerPostgreColumn<true>(
+			id_dieu: new SmallIntegerPostgreColumn(
 				"id_dieu",
-				dieux.findByNameNullable(pouvoir.godName)?.id ?? null,
-				true,
+				dieux.findByName(pouvoir.godName).id,
+				false,
 				{table: "dieu", column: "id"}
 			),
 		};

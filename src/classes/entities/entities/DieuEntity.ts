@@ -21,7 +21,7 @@ class DieuEntity extends Entity<DieuEntityRecord> {
 	public findByNameNullable(name: string | null) {
 		return name == null ? null : this.findByName(name);
 	}
-	
+
 	public findByName(name: string) {
 		return this.find(name, (e, i, o) => e.name == name);
 	}
