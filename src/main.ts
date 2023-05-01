@@ -75,6 +75,8 @@ entities.decorations.inserts(
 inputs.ventes.records.forEach((r) => {
 	entities.commandes.insert(
 		r.quantity,
+		r.year,
+		r.month,
 		Object.values(r.payment).map((e) => e[1]) as [number, number, number],
 		r.objectName,
 		r.provinceName,
@@ -136,7 +138,7 @@ tables.mois.inserts(entities.mois.records, entities.dieux);
 tables.mois.saveAsSql();
 
 entities.commandes.records.forEach((e) =>
-	tables.commande.insert(e, entities.objets, entities.provinces, entities.decorations),
+	tables.commande.insert(e, entities.objets, entities.provinces, entities.decorations, entities.mois),
 );
 //tables.commande.saveAsJson();
 tables.commande.saveAsSql();

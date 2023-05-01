@@ -10,6 +10,8 @@ class CommandeEntity extends Entity<CommandeEntityRecord> {
 
 	public insert(
 		quantity: number,
+		year: number,
+		month: string,
 		payment: [number, number, number],
 		objectName: string,
 		provinceName: string,
@@ -21,6 +23,8 @@ class CommandeEntity extends Entity<CommandeEntityRecord> {
 		this.__records.push(
 			new CommandeEntityRecord(
 				quantity,
+				year,
+				month,
 				payment,
 				objectName,
 				provinceName,
@@ -34,6 +38,8 @@ class CommandeEntity extends Entity<CommandeEntityRecord> {
 
 	public inserts(
 		quantities: number[],
+		years: number[],
+		months: string[],
 		payments: [number, number, number][],
 		objectsName: string[],
 		provincesName: string[],
@@ -44,6 +50,8 @@ class CommandeEntity extends Entity<CommandeEntityRecord> {
 	) {
 		const data = quantities.map((_, i) => [
 			quantities[i],
+			years[i],
+			months[i],
 			payments[i],
 			objectsName[i],
 			provincesName[i],
@@ -53,18 +61,22 @@ class CommandeEntity extends Entity<CommandeEntityRecord> {
 			makerss[i],
 		]);
 
-		data.forEach(([quantity, payment, objectName, provinceName, decorations, powers, payment_units, makers]) => {
-			this.insert(
-				quantity as number,
-				payment as [number, number, number],
-				objectName as string,
-				provinceName as string,
-				decorations as string | null,
-				powers as string[] | null,
-				payment_units as [string, string, string],
-				makers as string[],
-			);
-		});
+		data.forEach(
+			([quantity, year, month, payment, objectName, provinceName, decorations, powers, payment_units, makers]) => {
+				this.insert(
+					quantity as number,
+					year as number,
+					month as string,
+					payment as [number, number, number],
+					objectName as string,
+					provinceName as string,
+					decorations as string | null,
+					powers as string[] | null,
+					payment_units as [string, string, string],
+					makers as string[],
+				);
+			},
+		);
 	}
 }
 

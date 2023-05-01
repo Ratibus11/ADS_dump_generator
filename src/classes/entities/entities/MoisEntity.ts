@@ -13,6 +13,10 @@ class MoisEntity extends Entity<MoisEntityRecord> {
 	public inserts(names: string[], godsName: string[]) {
 		names.forEach((_, i) => this.insert(names[i], godsName[i]));
 	}
+
+	public findByName(name: string) {
+		return this.find(name, (e, i, o) => e.name == name);
+	}
 }
 
 export { MoisEntity };

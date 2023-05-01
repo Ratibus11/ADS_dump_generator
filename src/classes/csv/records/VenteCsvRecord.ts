@@ -46,7 +46,7 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 
 	private __cleanDate(): typeof this.__date {
 		let [day, month, year] = this.data[0].split(" ").filter((e) => e != "");
-		return [Number.parseInt(day.replaceAll('"', "")), month.toUpperCase(), Number.parseInt(year)];
+		return [Number.parseInt(day.replaceAll('"', "")), month.trim().toUpperCase(), Number.parseInt(year)];
 	}
 
 	private __cleanObjectName(): typeof this.__objectName {
@@ -106,6 +106,14 @@ class VenteCsvRecord extends CsvRecord<10, VenteCsvObject> {
 			},
 			quantity: this.__orderedQuantity,
 		};
+	}
+
+	public get year() {
+		return this.__date[0];
+	}
+
+	public get month() {
+		return this.__date[1];
 	}
 
 	public get quantity(): typeof this.__orderedQuantity {

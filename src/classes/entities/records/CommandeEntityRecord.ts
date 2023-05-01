@@ -2,6 +2,8 @@ import { EntityRecord } from "../EntityRecord";
 
 type CommandeEntityObject = {
 	id: number;
+	year: number;
+	month: string;
 	makers: string[];
 	quantity: number;
 	payment: { unit: string; quantity: number }[];
@@ -11,6 +13,8 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 	private static __auto_increment: number = 1;
 
 	private readonly __id: number;
+	private readonly __year: number;
+	private readonly __month: string;
 	private readonly __quantity: number;
 	private readonly __objectName: string;
 	private readonly __provinceName: string;
@@ -26,6 +30,8 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 
 	constructor(
 		quantity: number,
+		year: number,
+		month: string,
 		payment: [number, number, number],
 		objectName: string,
 		provinceName: string,
@@ -36,6 +42,8 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 	) {
 		super();
 		this.__id = CommandeEntityRecord.__auto_increment++;
+		this.__year = year;
+		this.__month = month;
 		this.__quantity = quantity;
 		this.__objectName = objectName;
 		this.__provinceName = provinceName;
@@ -55,6 +63,8 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 
 		return {
 			id: this.__id,
+			year: this.__year,
+			month: this.__month,
 			quantity: this.__quantity,
 			payment: payments,
 			makers: this.__makersName,
@@ -63,6 +73,14 @@ class CommandeEntityRecord extends EntityRecord<CommandeEntityObject> {
 
 	public get id() {
 		return this.__id;
+	}
+
+	public get year() {
+		return this.__year;
+	}
+
+	public get month() {
+		return this.__month;
 	}
 
 	public get quantity() {
