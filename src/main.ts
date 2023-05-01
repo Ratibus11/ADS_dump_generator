@@ -55,7 +55,16 @@ let entities = {
 entities.artisans.inserts(UniqueArray.of(inputs.ventes.makersNames.flat()).sort());
 entities.objets.inserts(UniqueArray.of(inputs.ventes.objects).sort());
 entities.dieux.inserts(UniqueArray.of(inputs.demiDieux.gods).sort());
-entities.mois.inserts(UniqueArray.of(inputs.mois.months).sort(), inputs.mois.gods);
+entities.mois.inserts(
+	inputs.mois.months
+		.map((nomMois, i) => [nomMois, inputs.mois.gods[i]])
+		.sort((a, b) => a[0].localeCompare(b[0]))
+		.map((e) => e[0]),
+	inputs.mois.months
+		.map((nomMois, i) => [nomMois, inputs.mois.gods[i]])
+		.sort((a, b) => a[0].localeCompare(b[0]))
+		.map((e) => e[1]),
+);
 entities.pouvoirs.inserts(
 	UniqueArray.of((inputs.ventes.powers.filter((e) => Array.isArray(e)) as string[][]).flat()).sort(),
 	entities.dieux,

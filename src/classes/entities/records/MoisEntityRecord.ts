@@ -1,6 +1,6 @@
 import { EntityRecord } from "../EntityRecord";
 
-type MoisEntityObject = { id: number; name: string };
+type MoisEntityObject = { id: number; name: string; god_name: string };
 
 class MoisEntityRecord extends EntityRecord<MoisEntityObject> {
 	private static __auto_increment: number = 1;
@@ -19,6 +19,7 @@ class MoisEntityRecord extends EntityRecord<MoisEntityObject> {
 	public toObject(): MoisEntityObject {
 		return {
 			id: this.__id,
+			god_name: this.__godName,
 			name: this.__name,
 		};
 	}
