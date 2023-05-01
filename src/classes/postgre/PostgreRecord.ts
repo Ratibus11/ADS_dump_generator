@@ -34,7 +34,7 @@ abstract class PostgreRecord<O extends Object> {
 
 	public get sqlContent(): (string | number)[] {
 		return Object.values(this._columns).map((e) => {
-			if (!e || !e.value) {
+			if (!e || e.value == null) {
 				return "null";
 			} else if (Number.isInteger(e.value)) {
 				return e.value;
